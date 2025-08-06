@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华为鸿蒙云应用查询系统</title>
+    
+    <!-- 华为Logo Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 华为风格头部 */
+        .header {
+            background: linear-gradient(90deg, #E60012 0%, #FF4444 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(230, 0, 18, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #E60012;
+            font-size: 18px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-left: auto;
+        }
+
+        /* 主要内容区域 */
+        .main-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .app-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #E60012, #FF4444);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #E60012;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(230, 0, 18, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(90deg, #E60012, #FF4444);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 0, 18, 0.3);
+        }
+
+        .reset-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+
+        /* 官网验证区域 */
+        .verification-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .verification-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verification-icon {
+            width: 24px;
+            height: 24px;
+            background: #E60012;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #f8f9fa;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transform: scale(0.8);
+            transform-origin: 0 0;
+            width: 125%;
+            height: 125%;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e1e8ed;
+            border-top: 4px solid #E60012;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        /* 快速确认按钮 */
+        .quick-confirm {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(90deg, #E60012, #FF4444);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 0, 18, 0.3);
+            min-width: 120px;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 0, 18, 0.4);
+        }
+
+        .confirm-btn.secondary {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+
+        .confirm-btn.secondary:hover {
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        /* 结果显示区域 */
+        .result-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .result-icon.occupied {
+            background: linear-gradient(90deg, #dc3545, #e74c3c);
+        }
+
+        .result-icon.available {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+
+        .result-info h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .result-info p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .result-status {
+            margin-left: auto;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .result-status.occupied {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .result-status.available {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .result-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-details h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .header-subtitle {
+                margin-left: 0;
+            }
+
+            .main-container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .search-card {
+                padding: 25px;
+            }
+
+            .main-title {
+                font-size: 24px;
+            }
+
+            .search-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .quick-confirm {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .iframe-container {
+                height: 500px;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- 华为风格头部 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">华</div>
+            <div>
+                <div class="header-title">华为鸿蒙备案服务平台</div>
+            </div>
+            <div class="header-subtitle">鸿蒙云应用信息备案管理系统</div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <div class="main-container">
+        <!-- 搜索卡片 -->
+        <div class="search-card">
+            <div class="app-badge">鸿蒙云应用</div>
+            <h1 class="main-title">鸿蒙云应用备案查询</h1>
+            <p class="subtitle">查询鸿蒙云应用名称是否已被备案注册</p>
+            
+            <div class="search-form">
+                <input type="text" id="searchInput" class="search-input" placeholder="请输入鸿蒙云应用名称..." maxlength="50">
+                <button id="searchBtn" class="search-btn">搜索</button>
+                <button id="resetBtn" class="reset-btn" style="display: none;">重置</button>
+            </div>
+        </div>
+
+        <!-- 官网验证区域 -->
+        <div id="verificationSection" class="verification-section">
+            <div class="verification-title">
+                <div class="verification-icon">🔍</div>
+                官网验证查询
+            </div>
+            <div class="iframe-container">
+                <iframe id="proxyIframe" src="" frameborder="0"></iframe>
+                <div id="loadingOverlay" class="loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">正在加载工信部官网...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果显示区域 -->
+        <div id="resultSection" class="result-section">
+            <div class="result-header">
+                <div id="resultIcon" class="result-icon">
+                    ❌
+                </div>
+                <div class="result-info">
+                    <h3 id="resultTitle">查询结果</h3>
+                    <p id="resultTime">查询时间：2025/8/6 01:48:56</p>
+                </div>
+                <div id="resultStatus" class="result-status">
+                    已占用
+                </div>
+            </div>
+            <div id="resultMessage" class="result-message">
+                该鸿蒙云应用名称已被某公司备案注册，无法使用。
+            </div>
+            <div class="result-details">
+                <h4>查询详情</h4>
+                <div class="detail-item">
+                    <span class="detail-label">数据来源：</span>
+                    <span class="detail-value">工信部政务服务平台</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">查询方式：</span>
+                    <span class="detail-value">官方数据实时查询</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速确认按钮 -->
+    <div id="quickConfirm" class="quick-confirm">
+        <button id="confirmOccupied" class="confirm-btn">确认已占用</button>
+        <button id="confirmAvailable" class="confirm-btn secondary">确认未占用</button>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2025 华为鸿蒙云应用查询系统 - 官方数据实时查询</p>
+    </footer>
+
+    <script>
+        // DOM元素
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const verificationSection = document.getElementById('verificationSection');
+        const resultSection = document.getElementById('resultSection');
+        const quickConfirm = document.getElementById('quickConfirm');
+        const proxyIframe = document.getElementById('proxyIframe');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const confirmOccupied = document.getElementById('confirmOccupied');
+        const confirmAvailable = document.getElementById('confirmAvailable');
+
+        // 搜索功能
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (!searchTerm) {
+                alert('请输入要查询的鸿蒙云应用名称');
+                return;
+            }
+
+            // 显示加载状态
+            searchBtn.innerHTML = '<span class="loading"></span> 查询中...';
+            searchBtn.disabled = true;
+
+            // 模拟查询延迟
+            setTimeout(() => {
+                // 显示验证区域
+                verificationSection.style.display = 'block';
+                verificationSection.classList.add('fade-in');
+                
+                // 显示快速确认按钮
+                quickConfirm.style.display = 'flex';
+                
+                // 隐藏结果区域
+                resultSection.style.display = 'none';
+                
+                // 显示重置按钮
+                resetBtn.style.display = 'inline-block';
+                
+                // 加载iframe内容
+                loadIframeContent();
+                
+                // 恢复搜索按钮
+                searchBtn.innerHTML = '搜索';
+                searchBtn.disabled = false;
+                
+                // 滚动到验证区域
+                verificationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1000);
+        }
+
+        // 加载iframe内容
+        function loadIframeContent() {
+            // 显示加载覆盖层
+            loadingOverlay.style.display = 'flex';
+            
+            // 设置iframe源为我们的代理服务器
+            proxyIframe.src = '/proxy';
+            
+            // 监听iframe加载完成
+            proxyIframe.onload = function() {
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 1500);
+            };
+            
+            // 设置超时隐藏加载层
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 10000);
+        }
+
+        // 显示查询结果
+        function showResult(isOccupied) {
+            const searchTerm = searchInput.value.trim();
+            const currentTime = new Date().toLocaleString('zh-CN');
+            
+            // 隐藏验证区域和快速确认按钮
+            verificationSection.style.display = 'none';
+            quickConfirm.style.display = 'none';
+            
+            // 更新结果内容
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultTime = document.getElementById('resultTime');
+            const resultStatus = document.getElementById('resultStatus');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            if (isOccupied) {
+                resultIcon.innerHTML = '❌';
+                resultIcon.className = 'result-icon occupied';
+                resultTitle.textContent = `鸿蒙云应用名称：${searchTerm}`;
+                resultStatus.textContent = '已占用';
+                resultStatus.className = 'result-status occupied';
+                resultMessage.textContent = '该鸿蒙云应用名称已被某公司备案注册，无法使用。';
+            } else {
+                resultIcon.innerHTML = '✅';
+                resultIcon.className = 'result-icon available';
+                resultTitle.textContent = `鸿蒙云应用名称：${searchTerm}`;
+                resultStatus.textContent = '未占用';
+                resultStatus.className = 'result-status available';
+                resultMessage.textContent = '该鸿蒙云应用名称暂未被备案注册，可以申请使用。';
+            }
+            
+            resultTime.textContent = `查询时间：${currentTime}`;
+            
+            // 显示结果区域
+            resultSection.style.display = 'block';
+            resultSection.classList.add('fade-in');
+            
+            // 滚动到结果区域
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 重置功能
+        function resetSearch() {
+            searchInput.value = '';
+            verificationSection.style.display = 'none';
+            resultSection.style.display = 'none';
+            quickConfirm.style.display = 'none';
+            resetBtn.style.display = 'none';
+            proxyIframe.src = '';
+            searchInput.focus();
+        }
+
+        // 事件监听器
+        searchBtn.addEventListener('click', performSearch);
+        resetBtn.addEventListener('click', resetSearch);
+        confirmOccupied.addEventListener('click', () => showResult(true));
+        confirmAvailable.addEventListener('click', () => showResult(false));
+
+        // 回车键搜索
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // 监听iframe消息
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'iframe_loaded') {
+                console.log('Iframe loaded:', event.data.url);
+                loadingOverlay.style.display = 'none';
+            }
+        });
+
+        // 页面加载完成后聚焦搜索框
+        window.addEventListener('load', function() {
+            searchInput.focus();
+        });
+    </script>
+</body>
+</html>
+
